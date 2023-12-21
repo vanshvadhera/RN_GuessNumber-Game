@@ -5,6 +5,7 @@ import GameOverScreen from "./Screens/GameOverScreen";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import Colors from "./Constants/Colors";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
@@ -22,7 +23,7 @@ export default function App() {
   const newGameHandler = () => {
     setGameIsOver(false);
     setUserNumber(null);
-  }
+  };
 
   let screen = <StartGameScreen userPickNumber={handlePickedNumber} />;
   if (userNumber) {
@@ -35,19 +36,22 @@ export default function App() {
   }
 
   return (
-    <LinearGradient
-      colors={[Colors.primary700, Colors.accent500]}
-      style={styles.rootContainer}
-    >
-      <ImageBackground
-        source={require("./assets/images/riho-kroll-m4sGYaHYN5o-unsplash.jpg")}
-        resizeMode="cover"
+    <>
+      <StatusBar style="inverted" />
+      <LinearGradient
+        colors={[Colors.primary700, Colors.accent500]}
         style={styles.rootContainer}
-        imageStyle={{ opacity: 0.15 }}
       >
-        <SafeAreaView style={styles.rootContainer}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require("./assets/images/riho-kroll-m4sGYaHYN5o-unsplash.jpg")}
+          resizeMode="cover"
+          style={styles.rootContainer}
+          imageStyle={{ opacity: 0.15 }}
+        >
+          <SafeAreaView style={styles.rootContainer}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 

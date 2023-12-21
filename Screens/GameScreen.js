@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  useWindowDimensions,
+} from "react-native";
 import Title from "../Components/Title";
 import Colors from "../Constants/Colors";
 import { useEffect, useState } from "react";
@@ -21,6 +27,8 @@ let maxBoundary = 100;
 const GameScreen = ({ userNumber, gameOverHandler }) => {
   const initalGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initalGuess);
+
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     if (currentGuess == userNumber) {
@@ -59,9 +67,8 @@ const GameScreen = ({ userNumber, gameOverHandler }) => {
     setCurrentGuess(newRndNumber);
   };
 
-  return (
-    <View style={styles.outerGameScreeContainer}>
-      <Title>Opponent's Guess</Title>
+  let content = (
+    <>
       <View style={styles.guessNumberConatiner}>
         <Text style={styles.guessNumberText}>{currentGuess}</Text>
       </View>
@@ -82,12 +89,36 @@ const GameScreen = ({ userNumber, gameOverHandler }) => {
           </View>
         </View>
       </Card>
-      {/* </View> */}
-      {/* </View> */}
-      <View>
-        <Text>Log Rounds</Text>
-      </View>
-      <Text>{userNumber}</Text>
+    </>
+  );
+
+  if (width > 500 && width < 800) {
+    content = (
+      <>
+        <View style = {styles.buttonsContainerWidth}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+              -
+            </PrimaryButton>
+          </View>
+          <View style={styles.guessNumberConatiner}>
+            <Text style={styles.guessNumberText}>{currentGuess}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+              +
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+  console.log(width,height);
+
+  return (
+    <View style={styles.outerGameScreeContainer}>
+      <Title>Opponent's Guess</Title>
+      {content}
     </View>
   );
 };
@@ -95,12 +126,22 @@ const GameScreen = ({ userNumber, gameOverHandler }) => {
 export default GameScreen;
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    margin: 10,
+  },
   outerGameScreeContainer: {
     flex: 1,
     padding: 12,
     // backgroundColor: "#fff",
     // alignItems: "center",
     // justifyContent: "center",
+  },
+  buttonsContainerWidth:{
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
